@@ -21,26 +21,23 @@ namespace PracticeTask1
         /// <param name="employees"></param>
         public void SetVacation(List<Employee> employees)
         {
-            var allVacationsCount = 0;
             DateTime startYear = new(DateTime.Now.Year, 1, 1);
             DateTime endYear = new(DateTime.Today.Year, 12, 31);
+            int range = (endYear - startYear).Days;
 
             foreach (var employee in employees)
             {
-                Random gen = new();
-                Random step = new();
                 int vacationCount = 28;
 
                 while (vacationCount > 0)
                 {
-                    int range = (endYear - startYear).Days;
-                    var startDate = startYear.AddDays(gen.Next(range));
+                    var startDate = startYear.AddDays(new Random().Next(range));
 
                     if (workDays.Contains(startDate.DayOfWeek.ToString()))
                     {
                         string[] vacationSteps = ["7", "14"];
-                        int vacIndex = gen.Next(vacationSteps.Length);
-                        var endDate = new DateTime(DateTime.Now.Year, 12, 31);
+                        int vacIndex = new Random().Next(vacationSteps.Length);
+                        var endDate = new DateTime();
                         int difference = 0;
                         if (vacationSteps[vacIndex] == "7")
                         {
@@ -59,17 +56,12 @@ namespace PracticeTask1
                             difference = 7;
                         }
 
-                        if (CanCreateVacation(employee, startDate, endDate) && vacationCount > 0)
+                        if (CanCreateVacation(employee,startDate, endDate) && vacationCount > 0)
                         {
                             AddDay(employee, startDate, endDate);
 
-                            allVacationsCount++;
-
                             vacationCount -= difference;
                         }
-                        else continue;
-
-
                     }
                 }
 
